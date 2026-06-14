@@ -9,14 +9,15 @@
 **One brain, every agent.** A cloud brain that Claude Code, Cursor, Codex — and your
 research, ops, and personal agents — read from _and write back to_, on any machine,
 for every teammate. Not another per-tool memory silo; the one source of truth they
-all share.
+all share — with **temporal facts that know what changed when** and **entity
+resolution that knows who's who**, the parts a vector dump gets wrong.
 
 [![CI](https://github.com/unison-labs-ai/unison-brain/actions/workflows/ci.yml/badge.svg)](https://github.com/unison-labs-ai/unison-brain/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/@unisonlabs/cli?logo=npm&color=cb3837&label=cli)](https://www.npmjs.com/package/@unisonlabs/cli)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Stars](https://img.shields.io/github/stars/unison-labs-ai/unison-brain?style=social)](https://github.com/unison-labs-ai/unison-brain)
 
-[**Why**](#with-the-brain-vs-without) • [**Quickstart**](#quickstart) • [**Install**](#install) • [**For agents**](#for-agents) • [**SPEC**](./SPEC.md)
+[**Why**](#the-hard-part--what-every-memory-system-gets-wrong) • [**Benchmarks**](#benchmarks--run-them-yourself) • [**Quickstart**](#quickstart) • [**Install**](#install) • [**For agents**](#for-agents) • [**SPEC**](./SPEC.md)
 
 </div>
 
@@ -75,6 +76,44 @@ skill wraps the CLI — one API contract, four surfaces.
 | `CLAUDE.md` / `.cursorrules` go stale the day after you write them | Agents **write back** what they learn, so the brain stays current on its own |
 | mem0 / Letta / Zep are frameworks you _build an agent with_ | Plugs into the agents you **already use** — nothing to host, no migration |
 | A flat log of past chat messages | A **knowledge graph**: entities (people, projects) + bitemporal facts — _who_, _what_, and _what changed when_ |
+
+## The hard part — what every memory system gets wrong
+
+Bolting "memory" onto an agent is easy: dump messages into a vector DB, embed,
+retrieve. That gets you ~80% — and for a single user remembering a preference, the
+model providers now give that away for free. The remaining 20% is where memory
+actually breaks, and it's the whole point of Unison:
+
+- **Temporal correctness.** Facts change. Someone switches jobs, a decision gets
+  reversed, a price updates. Most memory systems keep returning the stale fact
+  *with confidence*. Unison stores **bitemporal facts with supersession chains** —
+  it knows not just what's true, but *what changed when*, and stops surfacing the
+  version that's no longer true.
+- **Identity resolution.** "Dan", "Daniel", `daniel@…`, and "the new backend hire"
+  are one person. Naive memory stores them as four, and the facts scatter. Unison
+  runs **tiered entity resolution** (deterministic → fuzzy → a calibrated LLM judge,
+  auto-merging above a confidence threshold) so facts attach to the right entity.
+- **One brain, every agent — shared and consistent.** Per-tool memory (Cursor's, a
+  `CLAUDE.md`, mem0 inside one app) is a silo. Unison is **one source of truth every
+  agent and teammate reads from and writes back to** — Claude Code, Cursor, Codex,
+  voice, your backend — so your fleet doesn't hold contradictory beliefs.
+
+**"Can't I just build this with Postgres + pgvector?"** You can build the 80%. The
+20% above — temporal supersession, calibrated identity resolution, multi-agent
+consistency, and the retrieval tuning that makes memory *drive decisions* instead of
+just echo them — is what this project is. And we measure it in the open, so you don't
+have to take our word for it ([see below](#benchmarks--run-them-yourself)).
+
+## Benchmarks — run them yourself
+
+Memory benchmarks in this space are mostly self-reported and don't reproduce: vendors
+quote headline numbers against weak baselines, and independent attempts to reproduce
+those scores have failed. We do the opposite. [**Unison-evals**](https://github.com/unison-labs-ai/Unison-evals)
+is an open harness that scores every memory system — **including ours** — on the same
+code, with a **decision-driving** test (memory that must change what the agent *does*,
+not just what it can recall) that most vendor benchmarks avoid.
+
+No cherry-picked baselines. Clone it, run it, check our claims against everyone else's.
 
 ## Quickstart
 
