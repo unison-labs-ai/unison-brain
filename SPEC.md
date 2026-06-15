@@ -86,10 +86,10 @@ pre-checks scopes — it sends the call and surfaces the result.
 
 ### Write constraints
 
-Document paths must end in `.md`, and writes/deletes to the read-only tiers
-`/system/` and `/sources/` return `403`; the writable scopes are `/private/`
-and `/workspace/` (teams as `/workspace/teams/<slug>/`; legacy roots `/wiki/`
-and `/skills/` are also accepted for compatibility). The client offers
+Document paths must end in `.md`, and writes/deletes to read-only paths
+(`/system/` and the ingest-only `/private/sources/`) return `403`; the writable
+scopes are `/private/` and `/workspace/` (teams as `/workspace/teams/<slug>/`;
+legacy roots `/wiki/` and `/skills/` are also accepted for compatibility). The client offers
 write/delete/tag for any path and lets the server reject — it never hides or
 blocks paths itself.
 
