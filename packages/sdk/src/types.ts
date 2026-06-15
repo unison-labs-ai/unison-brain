@@ -180,6 +180,30 @@ export interface IngestResult {
   items: IngestItemResult[];
 }
 
+// ── Remember ───────────────────────────────────────────────────────────────
+
+/** A dump to "remember": freeform text, conversation turns, or a raw session log. */
+export type RememberDump =
+  | string
+  | { turns: Array<{ role: string; content: string }> }
+  | { sessionJsonl: string };
+
+export interface RememberInput {
+  /** What to remember — the same behavior as the `/remember` skill. */
+  dump: RememberDump;
+  /** Provenance label, e.g. "claude-code-session" | "meeting". */
+  source?: string;
+  /** Stable id → idempotent re-remember (same dump is a no-op). */
+  sourceRef?: string;
+  /** Optional steering, e.g. "focus on decisions". */
+  hints?: string;
+}
+
+/** Remember runs as a background job; poll `jobs.get(jobId)` for status. */
+export interface RememberResult {
+  jobId: string;
+}
+
 // ── Batch doc write ────────────────────────────────────────────────────────
 
 export interface WriteDocInput {

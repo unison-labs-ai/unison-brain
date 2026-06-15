@@ -136,6 +136,26 @@ Scope: `brain:write`.
 `input` (`IngestInput`):
 - `items: IngestItem[]` — 1–100 items per call.
 
+### `u.remember`
+
+```ts
+remember(input: RememberInput): Promise<RememberResult>
+```
+
+"Remember" a dump (a Claude Code session, a conversation, or freeform text)
+exactly the way the `/remember` skill does after a session: it applies the
+save-or-skip filter, dedupes against existing notes, and files curated
+`/private/kb` notes + entity facts. Runs as a background job — poll
+`jobs.get(jobId)` for status.
+
+Scope: `brain:write`.
+
+`input` (`RememberInput`):
+- `dump: RememberDump` — What to remember — the same behavior as the `/remember` skill.
+- `source?: string` — Provenance label, e.g. "claude-code-session" | "meeting".
+- `sourceRef?: string` — Stable id → idempotent re-remember (same dump is a no-op).
+- `hints?: string` — Optional steering, e.g. "focus on decisions".
+
 ### `u.writeDocs`
 
 ```ts

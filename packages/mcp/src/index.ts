@@ -137,6 +137,31 @@ server.tool(
 );
 
 server.tool(
+  "brain_remember",
+  "Remember a dump (the current session, a conversation, or freeform text) the way the /remember skill does: it applies the save-or-skip filter, dedupes against existing notes, and files curated /private/kb notes + entity facts. Runs as a background job — poll brain_job for status. Use this at the end of a session to persist what's worth keeping.",
+  {
+    dump: z
+      .union([
+        z.string().describe("Freeform text to remember"),
+        z
+          .object({
+            turns: z.array(z.object({ role: z.string(), content: z.string() })),
+          })
+          .describe("Conversation turns"),
+        z.object({ sessionJsonl: z.string() }).describe("Raw Claude Code session log (.jsonl)"),
+      ])
+      .describe("What to remember"),
+    source: z.string().optional().describe('Provenance label, e.g. "claude-code-session"'),
+    sourceRef: z.string().optional().describe("Stable id → idempotent re-remember"),
+    hints: z.string().optional().describe('Optional steering, e.g. "focus on decisions"'),
+  },
+  async ({ dump, source, sourceRef, hints }) => {
+    ensureAuth();
+    return asText(await client.remember({ dump, source, sourceRef, hints }));
+  },
+);
+
+server.tool(
   "brain_search",
   "Search the Unison brain (hybrid keyword + semantic). Use before answering questions that may rely on the user's prior decisions, conventions, or notes.",
   {
