@@ -15,6 +15,7 @@ import { registerIngest } from "./commands/ingest";
 import { registerJobs } from "./commands/jobs";
 import { registerList } from "./commands/list";
 import { registerMigrate } from "./commands/migrate";
+import { registerRemember } from "./commands/remember";
 import { registerReview } from "./commands/review";
 import { registerSearch } from "./commands/search";
 import { registerSkill } from "./commands/skill";
@@ -86,6 +87,7 @@ registerDocs(program);
 // Recall + ingest
 registerContext(program);
 registerIngest(program);
+registerRemember(program);
 // Graph
 registerEntity(program);
 registerFact(program);

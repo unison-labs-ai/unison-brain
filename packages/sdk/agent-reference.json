@@ -314,6 +314,44 @@
           ]
         },
         {
+          "name": "remember",
+          "signature": "remember(input: RememberInput): Promise<RememberResult>",
+          "doc": "\"Remember\" a dump (a Claude Code session, a conversation, or freeform text)\nexactly the way the `/remember` skill does after a session: it applies the\nsave-or-skip filter, dedupes against existing notes, and files curated\n`/private/kb` notes + entity facts. Runs as a background job — poll\n`jobs.get(jobId)` for status.\n\nScope: `brain:write`.",
+          "sdkCall": "u.remember",
+          "params": [
+            {
+              "name": "input",
+              "type": "RememberInput",
+              "fields": [
+                {
+                  "name": "dump",
+                  "type": "RememberDump",
+                  "optional": false,
+                  "doc": "What to remember — the same behavior as the `/remember` skill."
+                },
+                {
+                  "name": "source",
+                  "type": "string",
+                  "optional": true,
+                  "doc": "Provenance label, e.g. \"claude-code-session\" | \"meeting\"."
+                },
+                {
+                  "name": "sourceRef",
+                  "type": "string",
+                  "optional": true,
+                  "doc": "Stable id → idempotent re-remember (same dump is a no-op)."
+                },
+                {
+                  "name": "hints",
+                  "type": "string",
+                  "optional": true,
+                  "doc": "Optional steering, e.g. \"focus on decisions\"."
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "writeDocs",
           "signature": "writeDocs(docs: WriteDocInput[]): Promise<BrainDocument[]>",
           "doc": "Batch write multiple documents in a single call.\nEquivalent to calling `write()` on each document but with one round-trip.\n\nScope: `brain:write`.",
