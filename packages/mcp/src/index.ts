@@ -193,6 +193,37 @@ server.tool(
 );
 
 server.tool(
+  "brain_grep",
+  "Exact-substring/regex search over brain document bodies — the wiki's `grep`. Use when you need a literal string (an error code, a commit hash, a handle) rather than semantic recall; for meaning-based recall use brain_context or brain_search.",
+  {
+    pattern: z.string().describe("Literal substring or regex to match in document bodies"),
+    caseSensitive: z.boolean().optional().describe("Match case exactly (default false)"),
+    limit: z.number().int().positive().optional().describe("Max matching documents (default 50)"),
+  },
+  async ({ pattern, caseSensitive, limit }) => {
+    ensureAuth();
+    return asText(await client.grep(pattern, { caseSensitive, limit }));
+  },
+);
+
+server.tool(
+  "brain_neighbors",
+  "List the 1-hop neighbors of a document in the brain's link graph — the wiki's 'what links here / related pages'. Use to navigate from a page to its connected pages (cross-links, mentions) instead of re-searching. Pass a doc path or id.",
+  {
+    idOrPath: z.string().describe("Document path or id to find neighbors of"),
+    kinds: z
+      .array(z.enum(["mentions", "derived_from", "supersedes", "see_also"]))
+      .optional()
+      .describe("Restrict to specific link kinds (default: all)"),
+    limit: z.number().int().positive().optional().describe("Max neighbors (default 20)"),
+  },
+  async ({ idOrPath, kinds, limit }) => {
+    ensureAuth();
+    return asText(await client.neighbors(idOrPath, { kinds, limit }));
+  },
+);
+
+server.tool(
   "brain_list",
   "List documents in the Unison brain under a path prefix.",
   {

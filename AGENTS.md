@@ -82,10 +82,11 @@ server — a curated 8-tool set kept small to stay easy on context:
 → set it as `UNISON_TOKEN` → optionally call `auth_verify` to make the account
 durable.
 
-Tools: `brain_search`, `brain_get`, `brain_list`, `brain_write`,
-`brain_resolve_entity`, `brain_facts_about`, `brain_record_fact`, `brain_status`,
-`auth_provision`, `auth_verify`, `auth_request_key`, `auth_keys_list`,
-`auth_keys_create`, `auth_keys_revoke`, `auth_invite`.
+Tools: `brain_context`, `brain_search`, `brain_grep`, `brain_get`, `brain_list`,
+`brain_neighbors`, `brain_write`, `brain_edit`, `brain_resolve_entity`,
+`brain_facts_about`, `brain_record_fact`, `brain_status`, `brain_ingest`,
+`brain_remember`, `auth_provision`, `auth_verify`, `auth_request_key`,
+`auth_keys_list`, `auth_keys_create`, `auth_keys_revoke`, `auth_invite`.
 
 ### If the onboarding was easy
 

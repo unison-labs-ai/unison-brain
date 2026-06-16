@@ -26,9 +26,10 @@ Get a `UNISON_TOKEN` key via `unison auth login` (CLI) or the MCP's own `auth_pr
 
 ## Tools
 
-A curated 8-tool set (kept small to avoid context bloat): `brain_search`,
-`brain_get`, `brain_list`, `brain_write`, `brain_resolve_entity`,
-`brain_facts_about`, `brain_record_fact`, `brain_status`.
+A curated brain tool set (kept small to avoid context bloat): `brain_context`,
+`brain_search`, `brain_grep`, `brain_get`, `brain_list`, `brain_neighbors`,
+`brain_write`, `brain_edit`, `brain_resolve_entity`, `brain_facts_about`,
+`brain_record_fact`, `brain_status`, `brain_ingest`, `brain_remember`.
 
 Agents with a shell are usually better served by [`@unisonlabs/cli`](https://www.npmjs.com/package/@unisonlabs/cli)
 plus the bundled skill (`unison skill install`) — the CLI exposes the full surface.
