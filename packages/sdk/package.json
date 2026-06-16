@@ -2,15 +2,7 @@
   "name": "@unisonlabs/sdk",
   "version": "1.6.3",
   "description": "TypeScript SDK for the Unison brain API.",
-  "keywords": [
-    "unison",
-    "brain",
-    "knowledge-base",
-    "sdk",
-    "ai",
-    "agent",
-    "memory"
-  ],
+  "keywords": ["unison", "brain", "knowledge-base", "sdk", "ai", "agent", "memory"],
   "homepage": "https://github.com/Unison-Workspace/unison-brain#readme",
   "bugs": "https://github.com/Unison-Workspace/unison-brain/issues",
   "repository": {
@@ -33,12 +25,7 @@
     "./agent-reference.json": "./agent-reference.json",
     "./AGENT-REFERENCE.md": "./AGENT-REFERENCE.md"
   },
-  "files": [
-    "dist",
-    "src",
-    "AGENT-REFERENCE.md",
-    "agent-reference.json"
-  ],
+  "files": ["dist", "src", "AGENT-REFERENCE.md", "agent-reference.json"],
   "engines": {
     "node": ">=18"
   },
