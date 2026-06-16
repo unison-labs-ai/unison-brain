@@ -342,7 +342,7 @@ MCP column: ✓ = exposed as an agent tool; — = SDK/CLI only.
 | batch write docs | — | `brain.writeDocs()` | — |
 | patch doc metadata | — | `brain.patchDocMeta()` | — |
 | search | `unison search <q> [-k --kind --tag --memory-type --as-of --path-prefix]` | `brain.search()` | ✓ `brain_search` |
-| grep | `unison grep <pattern> [--case-sensitive]` | `brain.grep()` | — |
+| grep | `unison grep <pattern> [--case-sensitive]` | `brain.grep()` | ✓ `brain_grep` |
 | read doc | `unison get <path> [--json --as-of]` (alias `cat`) | `brain.get()` | ✓ `brain_get` |
 | list docs | `unison ls [path] [--docs --kind --tag]` | `brain.list()` | ✓ `brain_list` |
 | fs tree / raw | `unison tree [path]` / `unison get --raw <path>` | `brain.listFs()` / `brain.readFs()` | — |
@@ -351,7 +351,7 @@ MCP column: ✓ = exposed as an agent tool; — = SDK/CLI only.
 | delete doc | `unison rm <path>` | `brain.delete()` | — |
 | tag doc | `unison tag <path> [--add --remove]` | `brain.tag()` | — |
 | share | `unison share <doc\|fact\|entity> <id>` | `brain.share()` | — |
-| neighbors | `unison neighbors <idOrPath>` | `brain.neighbors()` | — |
+| neighbors | `unison neighbors <idOrPath>` | `brain.neighbors()` | ✓ `brain_neighbors` |
 | list entities | `unison entity ls [--kind --status]` | `brain.entities.list()` | — |
 | resolve entity | `unison entity resolve <name>` | `brain.entities.resolve()` | ✓ `brain_resolve_entity` |
 | get entity | `unison entity get <id>` | `brain.entities.get()` | — |
@@ -373,8 +373,9 @@ MCP column: ✓ = exposed as an agent tool; — = SDK/CLI only.
 | auth | `unison auth login\|logout\|status` | `createKey()` / `listKeys()` / `revokeKey()` | — |
 
 MCP tool set: the brain tools — `brain_context`, `brain_ingest`,
-`brain_search`, `brain_get`, `brain_list`, `brain_write`, `brain_edit`,
-`brain_resolve_entity`, `brain_facts_about`, `brain_record_fact`, `brain_status`.
+`brain_search`, `brain_grep`, `brain_get`, `brain_list`, `brain_neighbors`,
+`brain_write`, `brain_edit`, `brain_resolve_entity`, `brain_facts_about`,
+`brain_record_fact`, `brain_status`.
 
 ---
 
