@@ -20,6 +20,10 @@ unison auth status              # already authenticated? then you're done
 
 Not authenticated:
 
+- **Pasted key (from the web app):** if the user already has a Unison account and
+  copied a key from the app's settings ("Connect to your terminal"), run
+  `unison auth token usk_...` — it validates the key and stores it. The fastest
+  path when the user is already signed up.
 - **Interactive (user present):** `unison auth login --email <their-email>` — the
   account is provisioned instantly and a one-time code is emailed. Ask the user
   for the code, then `unison auth verify <code>`. The key is stored in
