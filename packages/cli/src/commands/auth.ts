@@ -160,6 +160,35 @@ export function registerAuth(program: Command): void {
       await emailOtpLogin(apiUrl, email);
     });
 
+  // ── auth token ───────────────────────────────────────────────────────────────
+
+  auth
+    .command("token <usk>")
+    .description("Authenticate by pasting an API key (e.g. from the web app settings)")
+    .option("--api-url <url>", "API base URL", defaultApiUrl())
+    .action(async (usk: string, opts: { apiUrl: string }) => {
+      const token = usk.trim();
+      if (!token.startsWith("usk_")) {
+        fail("That doesn't look like a Unison API key (expected `usk_...`).");
+        process.exit(1);
+      }
+      // Validate the key against the brain before storing it, so a bad paste
+      // fails loudly here instead of on the next command.
+      const client = new BrainClient({ baseUrl: opts.apiUrl, token });
+      let me: Awaited<ReturnType<typeof client.whoami>>;
+      try {
+        me = await client.whoami();
+      } catch {
+        fail("That key was rejected by the brain. Copy a fresh one from the app and retry.");
+        process.exit(1);
+      }
+      const path = await saveCredentials({ apiUrl: opts.apiUrl, token });
+      success(`Signed in to ${opts.apiUrl}`);
+      info(`  user:      ${me.user.email ?? me.user.id}`);
+      info(`  workspace: ${me.workspace.name ?? me.workspace.id}`);
+      info(`  key saved: ${path}`);
+    });
+
   // ── auth verify ────────────────────────────────────────────────────────────
 
   auth

@@ -59,6 +59,7 @@ prints the resolved path); `get`, `edit`, `rm`, and `tag` need the full path.
 | Command | What it does |
 |---|---|
 | `unison auth login --email <email>` | Provision/login; emails a one-time code. |
+| `unison auth token <usk_>` | Authenticate by pasting an API key (e.g. from the web app settings); validates then stores it. |
 | `unison auth verify <code>` | Complete login; stores the API key locally. |
 | `unison auth status` / `unison auth logout` | Inspect / clear stored credentials. |
 | `unison auth keys [ls]` / `unison auth keys create --name <n> [--scopes <s>...]` / `unison auth keys revoke <id>` | Manage API keys (`usk_…`). Default scopes: `brain:read brain:write`. |
