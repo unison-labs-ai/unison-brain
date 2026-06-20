@@ -1,4 +1,4 @@
-# Unison SDK — agent method reference (v1.6.1)
+# Unison SDK — agent method reference (v1.7.0)
 
 Generated from the `@unisonlabs/sdk` type declarations. Call the brain
 through the SDK, never by hand-rolling `fetch()` to `/v1/…` paths:
