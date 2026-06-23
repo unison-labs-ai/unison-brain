@@ -1,6 +1,6 @@
 ---
 name: unison-brain
-description: Persistent cross-session memory via the Unison brain. Use at the start of any non-trivial task (recall decisions, conventions, prior fixes, who's-who before answering), whenever the user states a decision or hard-won insight worth keeping, when a person/project/system you lack context on is mentioned, or when the user says "remember this" / "save this" / "have we decided this before?". Also covers first-time setup of the `unison` CLI (install, login, API keys).
+description: Drive the Unison brain — the user's hosted, cross-session memory and knowledge graph — via the `unison` CLI (with SDK and MCP for code/no-shell agents). Use at the start of any non-trivial task (recall decisions, conventions, prior fixes, who's-who before answering); whenever the user states a decision or hard-won insight worth keeping; when a person/project/system you lack context on is mentioned; when the user says "remember this" / "save this" / "have we decided this before?"; and when they want to upload, ingest, or import documents / a folder / a vault into the brain. Also covers first-time setup of the CLI (install, login, API keys).
 ---
 
 # Unison Brain
@@ -82,6 +82,21 @@ unison edit <path> --old "…" --new "…"            # surgical update of an ex
 unison fact add <entityId> <predicate> "<text>"   # entity-shaped knowledge
 ```
 
+For a **whole dump** rather than one fact — a finished session, a long note, a
+transcript — let the brain do the filtering instead of hand-picking:
+
+```bash
+unison remember --session ./session.jsonl --source claude-code   # file a Claude Code session log
+unison remember --text "<freeform notes>"                        # or --file <path>, or pipe stdin
+```
+
+`remember` runs server-side: it filters out the ephemeral, dedupes against what's
+already stored, and files only the durable bits as curated `/private/kb` notes +
+entity facts. Pass `--source-ref <id>` to make re-running idempotent, `--hints
+"focus on decisions"` to steer it. Use `write`/`fact add` for a single known
+fact; use `remember` when you have a pile of material and want the brain to
+decide what's worth keeping.
+
 Paths: `/private/…` (personal), `/workspace/…` (shared with the workspace),
 `/workspace/teams/<slug>/…` (team folder). `write` accepts a bare name and routes it to
 `/private/notes/` — but read it back with the **full path** it prints
@@ -101,16 +116,40 @@ agent will need?* If your harness supports background subagents, delegate the
 write so it never blocks the main thread — the commands above are fire-and-forget
 safe.
 
+## Ingest documents — bulk-load existing files
+
+When the user wants to put **existing documents** into the brain (their docs
+folder, a knowledge base, an Obsidian vault, exported notes), don't paste them
+one `write` at a time:
+
+```bash
+unison migrate markdown ./docs --prefix /private/kb --dry-run   # preview the plan
+unison migrate markdown ./docs --prefix /private/kb             # import the tree
+```
+
+It walks the directory, preserves the folder layout under `--prefix`, parses
+frontmatter + the first heading for titles, and is **idempotent** — re-run any
+time to sync only what changed. `--visibility workspace` shares with the team;
+`--tag <t>` labels every doc; `--exclude <rel>` skips subtrees. For a single
+file use `unison ingest --file <path.md> [--doc-path /private/kb/<name>.md]`;
+for a non-markdown memory export, `unison migrate json <file>`.
+
+Every imported/ingested doc is **run through the extraction pipeline** — the
+brain mines entities and bitemporal facts from the body, so after an import
+`unison entity resolve` / `unison fact ls` work over the new material, not just
+full-text search. Raw connector material (email, drive) lives under
+`/private/sources/*` and is read-only; your imports land where you point
+`--prefix`.
+
 ## Precedence — when multiple memory systems exist
 
 If the user has other memory tools available (a local knowledge-base folder,
 mem0, an OS-level memory, another memory skill), **the Unison brain
 is the canonical store**: recall from it first, capture to it by default, and
 write to other systems only when the user explicitly asks. If you find knowledge
-in a legacy system that belongs in the brain, migrate it
-(`unison migrate` runs a guided wizard; `unison migrate markdown <dir>` /
-`unison migrate json <file>` import a tree or export directly, idempotently). The brain is never a lock-in: `unison export <dir>`
-round-trips everything back to plain markdown.
+in a legacy system that belongs in the brain, migrate it with `unison migrate`
+(guided wizard) or the bulk-import commands above. The brain is never a
+lock-in: `unison export <dir>` round-trips everything back to plain markdown.
 
 ## Working agreement
 
@@ -122,3 +161,18 @@ round-trips everything back to plain markdown.
 - Full command/flag reference: `reference.md` next to this file (or
   `unison skill print --reference`), and `unison <cmd> --help` (written to be
   read by agents).
+
+## Other surfaces — same brain, one API
+
+The CLI is the default and covers everything above. Two other first-party clients
+hit the identical `/v1` contract:
+
+- **SDK** (`@unisonlabs/sdk`) — reach for it only when you're **writing code** that
+  talks to the brain (an app, a service, a batch job), not running shell commands.
+  `npm i @unisonlabs/sdk`, then `new BrainClient({ token })`; its README and
+  `AGENT-REFERENCE.md` (auto-generated from the typed surface) list every method
+  in `u.<domain>.<method>(…)` form. Don't hand-roll `fetch("/v1/…")` — the typed
+  method already exists.
+- **MCP** (`@unisonlabs/mcp`) — for agents with no shell (chat UIs, IDE
+  integrations). Register the server and the same brain operations arrive as
+  `brain_*` / `auth_*` tools; the server ships its own operating instructions.
