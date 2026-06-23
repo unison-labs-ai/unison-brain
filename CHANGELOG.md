@@ -6,9 +6,23 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.7.1] - 2026-06-23
+
+### Added
+- **Agent docs cover the whole surface, not just memory.** `skill/SKILL.md` gained a dedicated **"Ingest documents — bulk-load existing files"** section (`unison migrate markdown <dir>` / `ingest --file` / `migrate json`, with the extraction-pipeline note) so agents can answer "upload my docs" without digging through the migration prose, plus an **"Other surfaces"** section pointing to the SDK (for code) and MCP (for no-shell). The skill `description` now triggers on upload/ingest/import intents, not only "remember this".
+- **`unison remember` is now documented in the skill + reference.** The server-side `/remember` engine (filter → dedupe → file curated `/private/kb` notes + entity facts; accepts a Claude Code `--session <jsonl>`, `--file`, `--text`, or stdin) was already shipped and exposed via the CLI, the `brain_remember` MCP tool, and `client.remember()` — but the skill only taught manual `write`/`fact add`. Agents now know to hand a whole dump to `remember` and let the brain decide what's durable.
+- **MCP server now ships `instructions`** (`packages/mcp/src/index.ts`): MCP-only agents — which never read `SKILL.md` — receive the recall-first / capture-before-finish protocol, the people rule, the bulk-upload guidance, and the read-only-data framing directly from the server.
+- **AGENTS.md self-onboarding** branches the three first-party surfaces — CLI (default), MCP (no shell), and a new **"Building an app? Use the SDK"** step pointing to the auto-generated `packages/sdk/AGENT-REFERENCE.md`.
+
+### Fixed
+- Docs: AGENTS.md called the MCP server "a curated 8-tool set" while listing 21 names; corrected to the actual **23** `brain_*` / `auth_*` tools (`brain_delete` and `auth_workspaces_list` were missing from the list).
+
+## [1.7.0] - 2026-06-20
+
+_Changelog reconciliation: the 1.6.0–1.7.0 line shipped without per-version CHANGELOG sections. The entries below accumulated across those releases (actor delegation, multi-workspace, `remember`, the default-host change) and are consolidated here as available as of 1.7.0._
+
 ### Fixed
 - CLI: `migrate markdown`/`json` now exit `6` (not `1`) when every write in the batch is blocked by the free-tier quota, so callers can distinguish the cap from other failures (found by the 1.5.1 QA fleet).
-- Docs: AGENTS.md called the MCP server "a curated 8-tool set" while listing 21 names; corrected to the actual **23** `brain_*` / `auth_*` tools (`brain_delete` and `auth_workspaces_list` were missing from the list).
 
 ### Changed
 
@@ -18,10 +32,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- **Agent docs cover the whole surface, not just memory.** `skill/SKILL.md` gained a dedicated **"Ingest documents — bulk-load existing files"** section (`unison migrate markdown <dir>` / `ingest --file` / `migrate json`, with the extraction-pipeline note) so agents can answer "upload my docs" without digging through the migration prose, plus an **"Other surfaces"** section pointing to the SDK (for code) and MCP (for no-shell). The skill `description` now triggers on upload/ingest/import intents, not only "remember this".
-- **`unison remember` is now documented in the skill + reference.** The server-side `/remember` engine (filter → dedupe → file curated `/private/kb` notes + entity facts; accepts a Claude Code `--session <jsonl>`, `--file`, `--text`, or stdin) was already shipped and exposed via the CLI, the `brain_remember` MCP tool, and `client.remember()` — but the skill only taught manual `write`/`fact add`. Agents now know to hand a whole dump to `remember` and let the brain decide what's durable.
-- **MCP server now ships `instructions`** (`packages/mcp/src/index.ts`): MCP-only agents — which never read `SKILL.md` — receive the recall-first / capture-before-finish protocol, the people rule, the bulk-upload guidance, and the read-only-data framing directly from the server.
-- **AGENTS.md self-onboarding** branches the three first-party surfaces — CLI (default), MCP (no shell), and a new **"Building an app? Use the SDK"** step pointing to the auto-generated `packages/sdk/AGENT-REFERENCE.md`.
 - **Actor delegation** — `BrainClientOptions.actor` + `client.withActor(externalId)` (SDK):
   sets `X-Unison-Actor: <id>` on every request. Shadow users are auto-created server-side;
   `/private` scoping isolates each actor. Requires the key to carry `brain:act-as` scope.

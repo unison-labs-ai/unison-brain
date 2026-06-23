@@ -1,6 +1,6 @@
 {
   "name": "@unisonlabs/mcp",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Model Context Protocol server for the Unison brain.",
   "keywords": ["unison", "brain", "knowledge-base", "mcp", "model-context-protocol", "ai", "agent"],
   "homepage": "https://github.com/Unison-Workspace/unison-brain#readme",
