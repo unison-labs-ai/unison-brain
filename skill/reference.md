@@ -4,6 +4,10 @@ Companion to `SKILL.md`. Every command accepts `--json` (machine output on stdou
 and `--actor <externalUserId>` (act as an end user; needs the `brain:act-as`
 scope). Run `unison <cmd> --help` for the authoritative flag list.
 
+Writing code instead of running shell commands? Use the SDK (`@unisonlabs/sdk`;
+methods listed in its `AGENT-REFERENCE.md`). No shell at all? The MCP server
+(`@unisonlabs/mcp`) exposes the same operations as `brain_*` / `auth_*` tools.
+
 ## Recall
 
 | Command | What it does |
@@ -24,6 +28,7 @@ scope). Run `unison <cmd> --help` for the authoritative flag list.
 | `unison rm <path> --yes` | Delete a document. |
 | `unison tag <path> [--add <t>...] [--remove <t>...]` | Manage tags. |
 | `unison ingest --file <md> [--title <t>] [--doc-path <p>] [--source-ref <ref>] [--visibility workspace\|private]` | Ingest a document through the extraction pipeline (entities + facts get built). |
+| `unison remember [--session <jsonl>\|--file <p>\|--text <t>\|stdin] [--hints <h>] [--source <s>] [--source-ref <ref>]` | Hand a whole dump (session log, transcript, freeform notes) to the server-side `/remember` engine: it filters the ephemeral, dedupes against existing memory, and files only the durable bits as curated `/private/kb` notes + entity facts. `--source-ref` makes re-running idempotent. |
 
 Writable path roots: `/private/…` (personal; free-form subtrees allowed except
 `/private/sources/*`), `/workspace/…` (workspace-shared), `/workspace/teams/<slug>/…` (team folder).
