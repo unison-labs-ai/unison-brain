@@ -274,39 +274,6 @@ describe("BrainClient context", () => {
 });
 
 describe("BrainClient ingest", () => {
-  test("ingest POSTs items and returns result", async () => {
-    let method = "";
-    let captured = "";
-    const client = new BrainClient({
-      baseUrl: "https://api.test",
-      token: "tok",
-      fetch: stubFetch((_u, init) => {
-        method = init?.method ?? "";
-        captured = String(init?.body ?? "");
-        return json({
-          items: [{ type: "conversation", jobId: "job-1" }],
-        });
-      }),
-    });
-
-    const result = await client.ingest({
-      items: [
-        {
-          type: "conversation",
-          turns: [{ role: "user", content: "hello" }],
-          sourceRef: "session-1",
-        },
-      ],
-    });
-
-    expect(method).toBe("POST");
-    const body = JSON.parse(captured);
-    expect(body.items).toHaveLength(1);
-    expect(body.items[0].type).toBe("conversation");
-    expect(body.items[0].sourceRef).toBe("session-1");
-    expect(result.items[0]).toMatchObject({ type: "conversation", jobId: "job-1" });
-  });
-
   test("ingest document item is sent correctly", async () => {
     let captured = "";
     const client = new BrainClient({

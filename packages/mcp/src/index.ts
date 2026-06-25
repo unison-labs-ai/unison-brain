@@ -107,45 +107,26 @@ server.tool(
 
 server.tool(
   "brain_ingest",
-  "Stream conversations or documents into brain memory. Conversations are routed through the signal-extraction pipeline and produce entities + facts. Documents land as extractable notes. Use this to persist important context from the current session so it survives future sessions.",
+  "Ingest documents into brain memory as extractable notes. For conversations and session logs, use brain_remember instead.",
   {
     items: z
       .array(
-        z.discriminatedUnion("type", [
-          z.object({
-            type: z.literal("conversation"),
-            turns: z
-              .array(
-                z.object({
-                  role: z.enum(["user", "assistant", "system"]),
-                  content: z.string(),
-                  name: z.string().optional(),
-                }),
-              )
-              .describe("The conversation turns to ingest"),
-            sourceRef: z
-              .string()
-              .describe("Stable caller-side identifier for this conversation (session/thread id)"),
-            visibility: z.enum(["workspace", "private"]).optional(),
-            idempotencyKey: z.string().optional(),
-          }),
-          z.object({
-            type: z.literal("document"),
-            content: z.string().describe("Markdown content of the document"),
-            title: z.string().optional(),
-            path: z
-              .string()
-              .optional()
-              .describe("Brain path to write the document to (e.g. /private/notes/foo.md)"),
-            tags: z.array(z.string()).optional(),
-            visibility: z.enum(["workspace", "private"]).optional(),
-            sourceRef: z.string().optional(),
-          }),
-        ]),
+        z.object({
+          type: z.literal("document"),
+          content: z.string().describe("Markdown content of the document"),
+          title: z.string().optional(),
+          path: z
+            .string()
+            .optional()
+            .describe("Brain path to write the document to (e.g. /private/notes/foo.md)"),
+          tags: z.array(z.string()).optional(),
+          visibility: z.enum(["workspace", "private"]).optional(),
+          sourceRef: z.string().optional(),
+        }),
       )
       .min(1)
       .max(100)
-      .describe("1–100 items: conversations or documents"),
+      .describe("1–100 document items"),
   },
   async ({ items }) => {
     ensureAuth();

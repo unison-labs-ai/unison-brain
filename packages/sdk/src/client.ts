@@ -359,10 +359,9 @@ export class BrainClient {
   }
 
   /**
-   * Stream conversations or documents into the brain's memory pipeline.
+   * Write documents into the brain's memory pipeline as extractable notes.
    *
-   * Conversations are routed through the signal-extraction pipeline and produce
-   * entities + facts. Documents are written as extractable notes.
+   * For conversations and session logs, use `remember()` instead.
    *
    * Scope: `brain:write`.
    */

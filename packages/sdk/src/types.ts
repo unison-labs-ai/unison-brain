@@ -123,26 +123,6 @@ export interface ContextResult {
 
 // ── Ingest ─────────────────────────────────────────────────────────────────
 
-export interface ConversationTurn {
-  role: "user" | "assistant" | "system";
-  content: string;
-  name?: string;
-}
-
-export interface IngestConversationItem {
-  type: "conversation";
-  turns: ConversationTurn[];
-  /**
-   * Stable caller-side identifier for this conversation (e.g. a session id or
-   * thread id). Used for idempotency and dedup.
-   */
-  sourceRef: string;
-  /** Default "private". Pass "workspace" to make signals visible workspace-wide. */
-  visibility?: Visibility;
-  /** Client-side idempotency key — re-submitting the same key is a no-op. */
-  idempotencyKey?: string;
-}
-
 export interface IngestDocumentItem {
   type: "document";
   content: string;
@@ -155,16 +135,11 @@ export interface IngestDocumentItem {
   sourceRef?: string;
 }
 
-export type IngestItem = IngestConversationItem | IngestDocumentItem;
+export type IngestItem = IngestDocumentItem;
 
 export interface IngestInput {
   /** 1–100 items per call. */
   items: IngestItem[];
-}
-
-export interface IngestConversationResult {
-  type: "conversation";
-  jobId: string;
 }
 
 export interface IngestDocumentResult {
@@ -174,7 +149,7 @@ export interface IngestDocumentResult {
   jobIds: string[];
 }
 
-export type IngestItemResult = IngestConversationResult | IngestDocumentResult;
+export type IngestItemResult = IngestDocumentResult;
 
 export interface IngestResult {
   items: IngestItemResult[];
