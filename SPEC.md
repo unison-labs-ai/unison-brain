@@ -237,27 +237,16 @@ less confidence.
 
 ### 5.9 Ingest (`brain:write`)
 
-Batch endpoint to stream conversations or documents into the brain's memory
-pipeline. Conversations are routed through the signal-extraction pipeline (entity
-resolution + fact extraction). Documents are written as extractable notes.
+Batch endpoint to write documents into the brain's memory pipeline as extractable
+notes. For conversations and session logs, use `POST /v1/brain/remember` instead.
 
 | Endpoint | Notes |
 |---|---|
 | `POST /v1/brain/ingest` | body `{ items: IngestItem[] }`, 1–100 items per call |
 
-`IngestItem` is a discriminated union:
+`IngestItem`:
 
 ```ts
-// Conversation item
-{
-  type: "conversation";
-  turns: { role: "user" | "assistant" | "system"; content: string; name?: string; }[];
-  sourceRef: string;          // stable caller-side id (session / thread id)
-  visibility?: "workspace" | "private";  // default "private"
-  idempotencyKey?: string;
-}
-
-// Document item
 {
   type: "document";
   content: string;
@@ -272,10 +261,7 @@ resolution + fact extraction). Documents are written as extractable notes.
 Response:
 
 ```ts
-{ items: (
-  | { type: "conversation"; jobId: string }
-  | { type: "document"; docId: string; path: string; jobIds: string[] }
-)[] }
+{ items: { type: "document"; docId: string; path: string; jobIds: string[] }[] }
 ```
 
 ### 5.2 Entities (graph)
@@ -338,7 +324,7 @@ MCP column: ✓ = exposed as an agent tool; — = SDK/CLI only.
 |---|---|---|---|
 | context recall | `unison context "<q>" [--deep --k --max-entities --path-prefix --include-bodies --json]` | `brain.context()` | ✓ `brain_context` |
 | migration in/out | `unison migrate` (wizard) / `migrate markdown\|json`, `unison export <dir>` | `brain.writeDocs()` / `brain.list()` | — (client-side, no new endpoints) |
-| ingest | `unison ingest [--file --conversation --source-ref --visibility]` | `brain.ingest()` | ✓ `brain_ingest` |
+| ingest | `unison ingest --file <path> [--source-ref --visibility]` | `brain.ingest()` | ✓ `brain_ingest` |
 | batch write docs | — | `brain.writeDocs()` | — |
 | patch doc metadata | — | `brain.patchDocMeta()` | — |
 | search | `unison search <q> [-k --kind --tag --memory-type --as-of --path-prefix]` | `brain.search()` | ✓ `brain_search` |

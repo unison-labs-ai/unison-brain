@@ -6,6 +6,17 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Breaking
+
+- **`POST /v1/brain/ingest` is now document-only.** The `type: "conversation"` variant has been
+  removed from `IngestItem`. Use `POST /v1/brain/remember` (or `unison remember` / `brain_remember`
+  / `client.remember()`) for conversations and session logs.
+- **SDK:** `ConversationTurn`, `IngestConversationItem`, and `IngestConversationResult` types
+  removed. `IngestItem` and `IngestItemResult` are now aliases for the document variants.
+- **CLI:** `unison ingest --conversation` option removed; stdin conversation JSON no longer
+  accepted. Pass `--file <path>` for documents; use `unison remember` for conversations.
+- **MCP:** `brain_ingest` tool schema no longer accepts `type: "conversation"` items.
+
 ## [1.7.1] - 2026-06-23
 
 ### Added

@@ -296,7 +296,7 @@
         {
           "name": "ingest",
           "signature": "ingest(input: IngestInput): Promise<IngestResult>",
-          "doc": "Stream conversations or documents into the brain's memory pipeline.\n\nConversations are routed through the signal-extraction pipeline and produce\nentities + facts. Documents are written as extractable notes.\n\nScope: `brain:write`.",
+          "doc": "Write documents into the brain's memory pipeline as extractable notes.\n\nFor conversations and session logs, use `remember()` instead.\n\nScope: `brain:write`.",
           "sdkCall": "u.ingest",
           "params": [
             {
