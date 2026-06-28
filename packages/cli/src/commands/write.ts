@@ -9,7 +9,7 @@ export function registerWrite(program: Command): void {
     .command("write <path>")
     .description("Write a document to the brain (content from -m or stdin)")
     .option("-m, --message <content>", "Document content (markdown)")
-    .option("--kind <kind>", "Document kind", "note")
+    .option("--kind <kind>", "Document kind", "wiki_page")
     .option("--title <title>", "Title")
     .option("--tldr <tldr>", "One-line summary")
     .option("--tag <tag...>", "Tags (repeatable)")

@@ -77,7 +77,7 @@ export function registerMigrate(program: Command): void {
         docs.push({
           path,
           bodyMd: mapped.content,
-          kind: "note",
+          kind: "wiki_page",
           title: mapped.title,
           tags: [...new Set([...mapped.tags, ...(opts.tag ?? [])])],
           visibility: opts.visibility as Visibility,
@@ -248,7 +248,7 @@ async function markdownDocs(
     docs.push({
       path: toBrainPath(opts.prefix, rel),
       bodyMd: fm.body.trim() ? fm.body : raw,
-      kind: "note",
+      kind: "wiki_page",
       title: fm.title ?? firstHeading(fm.body) ?? rel.replace(/\.(md|markdown)$/i, ""),
       tags: [...new Set([...fm.tags, ...(opts.tag ?? [])])],
       visibility: opts.visibility as Visibility,
@@ -266,7 +266,7 @@ async function jsonDocsForWizard(file: string, opts: MigrateOpts): Promise<Write
     docs.push({
       path: toBrainPath(opts.prefix, `${mapped.slug}.md`),
       bodyMd: mapped.content,
-      kind: "note",
+      kind: "wiki_page",
       title: mapped.title,
       tags: mapped.tags,
       visibility: opts.visibility as Visibility,
