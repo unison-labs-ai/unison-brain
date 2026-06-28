@@ -21,7 +21,11 @@ export interface BrainClientOptions {
 
 // ── Documents (filesystem tier) ────────────────────────────────────────────
 
-export type DocKind = "wiki_page" | "raw" | "log" | "index" | "skill" | "skill_proposed";
+// Writable/filterable document kinds — matches the brain's accepted write enum.
+// (`note`, `skill`, `skill_proposed` were removed from the brain; read responses
+// carry `kind: string`, so internal read-only kinds like search_result /
+// agent_action don't belong in this writable union.)
+export type DocKind = "wiki_page" | "raw" | "log" | "index";
 export type Visibility = "workspace" | "private";
 export type MemoryType = "episodic" | "semantic" | "procedural" | "auto";
 
