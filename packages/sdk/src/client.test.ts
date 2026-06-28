@@ -29,13 +29,13 @@ describe("BrainClient documents", () => {
       }),
     });
 
-    await client.search("hello world", { limit: 5, kinds: ["note", "wiki_page"], tags: ["x"] });
+    await client.search("hello world", { limit: 5, kinds: ["wiki_page", "raw"], tags: ["x"] });
 
     expect(url).toContain("/v1/brain/search?");
     expect(url).toContain("q=hello+world");
     expect(url).toContain("k=5");
-    expect(url).toContain("kind=note");
     expect(url).toContain("kind=wiki_page");
+    expect(url).toContain("kind=raw");
     expect(url).toContain("tag=x");
     expect(auth).toBe("Bearer tok");
   });

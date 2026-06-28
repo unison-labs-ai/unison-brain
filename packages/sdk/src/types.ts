@@ -21,7 +21,7 @@ export interface BrainClientOptions {
 
 // ── Documents (filesystem tier) ────────────────────────────────────────────
 
-export type DocKind = "wiki_page" | "raw" | "note" | "log" | "index" | "skill" | "skill_proposed";
+export type DocKind = "wiki_page" | "raw" | "log" | "index" | "skill" | "skill_proposed";
 export type Visibility = "workspace" | "private";
 export type MemoryType = "episodic" | "semantic" | "procedural" | "auto";
 
