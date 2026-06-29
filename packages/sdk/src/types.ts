@@ -242,12 +242,7 @@ export type ShareKind = "doc" | "fact" | "entity";
 
 // ── Entities (knowledge graph) ─────────────────────────────────────────────
 
-export type EntityKind =
-  | "person"
-  | "company"
-  | "project"
-  | "decision"
-  | "doc";
+export type EntityKind = "person" | "company" | "project" | "decision" | "doc";
 export type EntityStatus = "active" | "stub" | "archived";
 
 export interface BrainEntity {

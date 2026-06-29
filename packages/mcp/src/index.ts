@@ -280,15 +280,7 @@ server.tool(
   "Find a knowledge-graph entity (person, company, project, etc.) by name. Use when a name is mentioned and you need its id or context.",
   {
     name: z.string().describe("Entity display name"),
-    kindHint: z
-      .enum([
-        "person",
-        "company",
-        "project",
-        "decision",
-        "doc",
-      ])
-      .optional(),
+    kindHint: z.enum(["person", "company", "project", "decision", "doc"]).optional(),
   },
   async ({ name, kindHint }) => {
     ensureAuth();
