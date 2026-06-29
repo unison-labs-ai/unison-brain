@@ -136,7 +136,7 @@ server.tool(
 
 server.tool(
   "brain_remember",
-  "Remember a dump (the current session, a conversation, or freeform text) the way the /remember skill does: it applies the save-or-skip filter, dedupes against existing notes, and files curated /private/kb notes + entity facts. Runs as a background job — poll brain_job for status. Use this at the end of a session to persist what's worth keeping.",
+  "Remember a dump (the current session, a conversation, or freeform text) the way the /remember skill does: it applies the save-or-skip filter, dedupes against existing notes, and files curated /private/notes/ notes + entity facts. Runs as a background job — poll brain_job for status. Use this at the end of a session to persist what's worth keeping.",
   {
     dump: z
       .union([
@@ -236,7 +236,7 @@ server.tool(
 
 server.tool(
   "brain_write",
-  "Write or update a document in the Unison brain so the knowledge persists across sessions and machines. Writable roots: /private/… (e.g. /private/notes/<slug>.md), /workspace/… (e.g. /workspace/people/<slug>.md), and /teams/<slug>/… . A bare name routes to /private/notes/; legacy /wiki, /actions, /skills roots are gone.",
+  "Write or update a document in the Unison brain so the knowledge persists across sessions and machines. Writable roots: /private/… (e.g. /private/notes/<slug>.md) and /workspace/… (e.g. /workspace/people/<slug>.md); teams live at /workspace/teams/<slug>/. A bare name routes to /private/notes/; legacy /wiki, /actions, /skills roots are gone.",
   {
     path: z.string().describe("Document path, e.g. /private/notes/auth-decision.md"),
     bodyMd: z.string().describe("Markdown content"),
@@ -286,10 +286,6 @@ server.tool(
         "company",
         "project",
         "decision",
-        "topic",
-        "mail_thread",
-        "event",
-        "task",
         "doc",
       ])
       .optional(),

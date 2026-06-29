@@ -9,7 +9,7 @@ export function registerRemember(program: Command): void {
   program
     .command("remember")
     .description(
-      "Remember a dump (session, conversation, or text) — runs the /remember skill server-side: filter, dedupe, file curated /private/kb notes + entity facts",
+      "Remember a dump (session, conversation, or text) — runs the /remember skill server-side: filter, dedupe, file curated /private/notes/ notes + entity facts",
     )
     .option("--file <path>", "Read freeform text to remember from a file")
     .option("--session <path>", "Read a Claude Code session log (.jsonl) to remember")

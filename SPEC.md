@@ -191,13 +191,13 @@ must be treated as secrets and rotated via `keys.revoke` + `keys.create` if comp
 
 | Endpoint | Notes |
 |---|---|
-| `GET /v1/brain/search?q&k&kind*&tag*&memoryType&asOf&pathPrefix` | `k` 1–50 (def 10); `kind` ∈ wiki_page\|raw\|note\|log\|index; `memoryType` ∈ episodic\|semantic\|procedural\|auto; `pathPrefix` restricts results to documents under that path. Returns `{ results: RankedHit[] }`, each `{ doc, score, highlight?, sources[] }` — `doc` is a summary (no body) |
+| `GET /v1/brain/search?q&k&kind*&tag*&memoryType&asOf&pathPrefix` | `k` 1–50 (def 10); `kind` ∈ wiki_page\|raw\|log\|index; `memoryType` ∈ episodic\|semantic\|procedural\|auto; `pathPrefix` restricts results to documents under that path. Returns `{ results: RankedHit[] }`, each `{ doc, score, highlight?, sources[] }` — `doc` is a summary (no body) |
 | `GET /v1/brain/grep?pattern&caseSensitive&limit` | regex over document bodies; `limit` 1–200 (def 50) |
 | `GET /v1/brain/doc?path&asOf` | single document; `404 not_found` when missing |
 | `GET /v1/brain/list?prefix&kind*&tag*&limit` | enumerate by prefix / kind / tag |
 | `GET /v1/brain/fs?path` | directory listing (dir / file / mtime) |
 | `GET /v1/brain/fs/read?path` | raw content of any tier, including read-only ones |
-| `PUT /v1/brain/doc` | body: `path` (under a writable scope — `/private/` `/workspace/`, or legacy `/wiki/` `/skills/`; ends in `.md`), `kind` (def note), `title?`, `tldr?`, `bodyMd` (≤200k), `tags[]`, `visibility` workspace\|private, `expectedContentHash?`, `source?{kind,ref}` |
+| `PUT /v1/brain/doc` | body: `path` (under a writable scope — `/private/` `/workspace/`, or legacy `/wiki/` `/skills/`; ends in `.md`), `kind` (def wiki_page), `title?`, `tldr?`, `bodyMd` (≤200k), `tags[]`, `visibility` workspace\|private, `expectedContentHash?`, `source?{kind,ref}` |
 | `PUT /v1/brain/docs` | batch write: body `{ docs: WriteDocInput[] }` → `{ documents: BrainDocument[] }`. Each item has the same fields as `PUT /v1/brain/doc`. |
 | `PATCH /v1/brain/doc` | body `{ path, oldStr, newStr, expectedContentHash? }` for a body edit (server-side str_replace, atomic + uniqueness-checked). Also accepts a metadata-only variant `{ path, title?, tldr?, tags? }` to rename/re-summarize/re-tag without touching the body. |
 | `DELETE /v1/brain/doc?path` | delete a document |

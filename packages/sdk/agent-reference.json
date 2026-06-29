@@ -316,7 +316,7 @@
         {
           "name": "remember",
           "signature": "remember(input: RememberInput): Promise<RememberResult>",
-          "doc": "\"Remember\" a dump (a Claude Code session, a conversation, or freeform text)\nexactly the way the `/remember` skill does after a session: it applies the\nsave-or-skip filter, dedupes against existing notes, and files curated\n`/private/kb` notes + entity facts. Runs as a background job — poll\n`jobs.get(jobId)` for status.\n\nScope: `brain:write`.",
+          "doc": "\"Remember\" a dump (a Claude Code session, a conversation, or freeform text)\nexactly the way the `/remember` skill does after a session: it applies the\nsave-or-skip filter, dedupes against existing notes, and files curated\n`/private/notes/` notes + entity facts. Runs as a background job — poll\n`jobs.get(jobId)` for status.\n\nScope: `brain:write`.",
           "sdkCall": "u.remember",
           "params": [
             {

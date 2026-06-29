@@ -247,10 +247,6 @@ export type EntityKind =
   | "company"
   | "project"
   | "decision"
-  | "topic"
-  | "mail_thread"
-  | "event"
-  | "task"
   | "doc";
 export type EntityStatus = "active" | "stub" | "archived";
 
