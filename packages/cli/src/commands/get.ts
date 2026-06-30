@@ -7,7 +7,7 @@ export function registerGet(program: Command): void {
     .command("get <path>")
     .alias("cat")
     .description("Read a document from the brain by path (alias: cat)")
-    .option("--raw", "Read raw FS content (any tier, incl. /sources/ /raw/ /system/)")
+    .option("--raw", "Read raw FS content (read-only tiers /sources/ /system/)")
     .option("--actor <id>", "Act as an external user id (requires brain:act-as scope)")
     .option("--json", "Output JSON (default prints raw content)")
     .action(async (path: string, opts: { raw?: boolean; actor?: string; json?: boolean }) => {

@@ -28,7 +28,7 @@ methods listed in its `AGENT-REFERENCE.md`). No shell at all? The MCP server
 | `unison rm <path> --yes` | Delete a document. |
 | `unison tag <path> [--add <t>...] [--remove <t>...]` | Manage tags. |
 | `unison ingest --file <md> [--title <t>] [--doc-path <p>] [--source-ref <ref>] [--visibility workspace\|private]` | Ingest a document through the extraction pipeline (entities + facts get built). |
-| `unison remember [--session <jsonl>\|--file <p>\|--text <t>\|stdin] [--hints <h>] [--source <s>] [--source-ref <ref>]` | Hand a whole dump (session log, transcript, freeform notes) to the server-side `/remember` engine: it filters the ephemeral, dedupes against existing memory, and files only the durable bits as curated `/private/kb` notes + entity facts. `--source-ref` makes re-running idempotent. |
+| `unison remember [--session <jsonl>\|--file <p>\|--text <t>\|stdin] [--hints <h>] [--source <s>] [--source-ref <ref>]` | Hand a whole dump (session log, transcript, freeform notes) to the server-side `/remember` engine: it filters the ephemeral, dedupes against existing memory, and files only the durable bits as curated `/private/notes/` notes + entity facts. `--source-ref` makes re-running idempotent. |
 
 Writable path roots: `/private/…` (personal; free-form subtrees allowed except
 `/private/sources/*`), `/workspace/…` (workspace-shared), `/workspace/teams/<slug>/…` (team folder).
@@ -41,7 +41,7 @@ prints the resolved path); `get`, `edit`, `rm`, and `tag` need the full path.
 | Command | What it does |
 |---|---|
 | `unison migrate` | Guided wizard: detects memory systems on the machine (coding-agent memory dirs, Obsidian vaults, custom paths), imports what you pick, prints the cutover checklist. |
-| `unison migrate markdown <dir> [--prefix /private/kb] [--visibility private\|workspace] [--tag <t>...] [--exclude <rel>...] [--dry-run]` | Import a markdown tree (knowledge base, Obsidian vault, any tool's markdown export). Idempotent: diffs against the brain and writes only new/changed docs — re-run any time to sync. |
+| `unison migrate markdown <dir> [--prefix /private/notes] [--visibility private\|workspace] [--tag <t>...] [--exclude <rel>...] [--dry-run]` | Import a markdown tree (knowledge base, Obsidian vault, any tool's markdown export). Idempotent: diffs against the brain and writes only new/changed docs — re-run any time to sync. |
 | `unison migrate json <file> [--prefix /private/imported] [--dry-run]` | Import any memory system's JSON export — array of objects; id/title/content/tags field aliases auto-detected. |
 | `unison export <dir> [--path-prefix </...>]` | Export brain docs to a markdown directory with frontmatter (incl. `unison-path`) — the lossless backward path. |
 

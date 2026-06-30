@@ -33,7 +33,7 @@ export function registerMigrate(program: Command): void {
     .description(
       "Import a directory of markdown files (knowledge base, Obsidian vault, any tool's markdown export)",
     )
-    .option("--prefix <path>", "Brain path the tree is mounted under", "/private/kb")
+    .option("--prefix <path>", "Brain path the tree is mounted under", "/private/notes")
     .option("--visibility <v>", "workspace | private", "private")
     .option("--tag <tag...>", "Extra tag(s) applied to every imported doc")
     .option("--exclude <path...>", "Relative path prefix(es) to skip, e.g. --exclude raw archive")

@@ -373,7 +373,7 @@ export class BrainClient {
    * "Remember" a dump (a Claude Code session, a conversation, or freeform text)
    * exactly the way the `/remember` skill does after a session: it applies the
    * save-or-skip filter, dedupes against existing notes, and files curated
-   * `/private/kb` notes + entity facts. Runs as a background job — poll
+   * `/private/notes/` notes + entity facts. Runs as a background job — poll
    * `jobs.get(jobId)` for status.
    *
    * Scope: `brain:write`.

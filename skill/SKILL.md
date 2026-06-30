@@ -91,7 +91,7 @@ unison remember --text "<freeform notes>"                        # or --file <pa
 ```
 
 `remember` runs server-side: it filters out the ephemeral, dedupes against what's
-already stored, and files only the durable bits as curated `/private/kb` notes +
+already stored, and files only the durable bits as curated `/private/notes/` notes +
 entity facts. Pass `--source-ref <id>` to make re-running idempotent, `--hints
 "focus on decisions"` to steer it. Use `write`/`fact add` for a single known
 fact; use `remember` when you have a pile of material and want the brain to
@@ -123,15 +123,15 @@ folder, a knowledge base, an Obsidian vault, exported notes), don't paste them
 one `write` at a time:
 
 ```bash
-unison migrate markdown ./docs --prefix /private/kb --dry-run   # preview the plan
-unison migrate markdown ./docs --prefix /private/kb             # import the tree
+unison migrate markdown ./docs --prefix /private/notes --dry-run   # preview the plan
+unison migrate markdown ./docs --prefix /private/notes             # import the tree
 ```
 
 It walks the directory, preserves the folder layout under `--prefix`, parses
 frontmatter + the first heading for titles, and is **idempotent** — re-run any
 time to sync only what changed. `--visibility workspace` shares with the team;
 `--tag <t>` labels every doc; `--exclude <rel>` skips subtrees. For a single
-file use `unison ingest --file <path.md> [--doc-path /private/kb/<name>.md]`;
+file use `unison ingest --file <path.md> [--doc-path /private/notes/<name>.md]`;
 for a non-markdown memory export, `unison migrate json <file>`.
 
 Every imported/ingested doc is **run through the extraction pipeline** — the
