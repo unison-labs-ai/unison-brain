@@ -97,10 +97,25 @@ entity facts. Pass `--source-ref <id>` to make re-running idempotent, `--hints
 fact; use `remember` when you have a pile of material and want the brain to
 decide what's worth keeping.
 
-Paths: `/private/…` (personal), `/workspace/…` (shared with the workspace),
-`/workspace/teams/<slug>/…` (team folder). `write` accepts a bare name and routes it to
-`/private/notes/` — but read it back with the **full path** it prints
-(`get`/`edit`/`rm` don't take bare names).
+Where things live — the canonical layout:
+
+- `/private/notes/<slug>.md` — free-form notes; **the default home for anything
+  you capture**. `write` accepts a bare name and routes it here — but read it
+  back with the **full path** it prints (`get`/`edit`/`rm` don't take bare names).
+- `/private/<kind>/<slug>.md` — one page per entity, singular folder per kind:
+  `person`, `company`, `project`, `decision`, plus workspace-registered custom
+  kinds (e.g. `topic` for curated subject pages). The brain's synthesis jobs
+  maintain these — add entity knowledge via `fact add` or a note, don't
+  hand-build pages here.
+- `/private/sources/<connector>/…` — connector-ingested raw material. Read-only.
+- `/workspace/AGENTS.md` and `/workspace/teams/<slug>/…` — the only live
+  workspace-shared paths.
+
+Legacy folders (`/private/kb/…`, `learnings/`, `sessions/`, plural
+`people|companies|projects`) are normalized onto this scheme at write time —
+never target them. The server owns each doc's YAML header (`title`, `tags`,
+`created_by`, `created`, `updated`): write plain markdown; any frontmatter you
+send is folded into structured fields and re-rendered canonically.
 **Prefer updating an existing doc over creating a near-duplicate** — `unison
 search` for the topic first.
 
