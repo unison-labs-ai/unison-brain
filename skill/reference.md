@@ -31,10 +31,16 @@ methods listed in its `AGENT-REFERENCE.md`). No shell at all? The MCP server
 | `unison remember [--session <jsonl>\|--file <p>\|--text <t>\|stdin] [--hints <h>] [--source <s>] [--source-ref <ref>]` | Hand a whole dump (session log, transcript, freeform notes) to the server-side `/remember` engine: it filters the ephemeral, dedupes against existing memory, and files only the durable bits as curated `/private/notes/` notes + entity facts. `--source-ref` makes re-running idempotent. |
 
 Writable path roots: `/private/…` (personal; free-form subtrees allowed except
-`/private/sources/*`), `/workspace/…` (workspace-shared), `/workspace/teams/<slug>/…` (team folder).
-Paths are lowercase kebab-case ending in `.md`. **Bare names are accepted by
-`write` only** (the server routes them to `/private/notes/` and the command
-prints the resolved path); `get`, `edit`, `rm`, and `tag` need the full path.
+`/private/sources/*`, which is read-only connector material), `/workspace/…`
+(workspace-shared; live paths are `/workspace/AGENTS.md` and
+`/workspace/teams/<slug>/…`). Canonical `/private/` folders: `notes/` (free-form
+notes, the write default) and one singular folder per entity kind — `person/`,
+`company/`, `project/`, `decision/`, plus workspace-registered custom kinds
+(e.g. `topic/`). Legacy folders (`kb/`, `learnings/`, `sessions/`, plural
+entity folders) are normalized onto this scheme at write time. Paths are
+lowercase kebab-case ending in `.md`. **Bare names are accepted by `write`
+only** (the server routes them to `/private/notes/` and the command prints the
+resolved path); `get`, `edit`, `rm`, and `tag` need the full path.
 
 ## Migration (in and out)
 
@@ -50,7 +56,7 @@ prints the resolved path); `get`, `edit`, `rm`, and `tag` need the full path.
 | Command | What it does |
 |---|---|
 | `unison entity resolve "<name>"` | Find a person/company/project by name. |
-| `unison entity ls` / `unison entity get <id>` / `unison entity set <kind> <name>` | List / inspect / upsert entities. |
+| `unison entity ls` / `unison entity get <id>` / `unison entity set <kind> <name>` | List / inspect / upsert entities. Kinds: `person`, `company`, `project`, `decision`, or a workspace-registered custom kind. |
 | `unison fact ls --entity <id>` | Facts the brain holds about an entity. |
 | `unison fact add <entityId> <predicate> "<text>"` | Record a fact. |
 | `unison fact correct <factId>` | Supersede a fact with a corrected one. |

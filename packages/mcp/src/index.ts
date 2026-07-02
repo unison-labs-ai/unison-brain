@@ -183,7 +183,7 @@ server.tool(
 server.tool(
   "brain_get",
   "Read a single document from the Unison brain by its path.",
-  { path: z.string().describe("Document path, e.g. /workspace/projects/architecture.md") },
+  { path: z.string().describe("Document path, e.g. /private/notes/architecture.md") },
   async ({ path }) => {
     ensureAuth();
     return asText(await client.get(path));
@@ -225,7 +225,7 @@ server.tool(
   "brain_list",
   "List documents in the Unison brain under a path prefix.",
   {
-    prefix: z.string().optional().describe("Path prefix, e.g. /private or /workspace/people"),
+    prefix: z.string().optional().describe("Path prefix, e.g. /private/notes or /private/person"),
     limit: z.number().int().positive().optional().describe("Max items (default 100)"),
   },
   async ({ prefix, limit }) => {
@@ -236,7 +236,7 @@ server.tool(
 
 server.tool(
   "brain_write",
-  "Write or update a document in the Unison brain so the knowledge persists across sessions and machines. Writable roots: /private/… (e.g. /private/notes/<slug>.md) and /workspace/… (e.g. /workspace/people/<slug>.md); teams live at /workspace/teams/<slug>/. A bare name routes to /private/notes/; legacy /wiki, /actions, /skills roots are gone.",
+  "Write or update a document in the Unison brain so the knowledge persists across sessions and machines. Writable roots: /private/… (notes at /private/notes/<slug>.md; entity pages at /private/<kind>/<slug>.md for person/company/project/decision and registered custom kinds) and /workspace/teams/<slug>/… (team folders). /private/sources/* is read-only. A bare name routes to /private/notes/; legacy /wiki, /actions, /skills roots are gone.",
   {
     path: z.string().describe("Document path, e.g. /private/notes/auth-decision.md"),
     bodyMd: z.string().describe("Markdown content"),
